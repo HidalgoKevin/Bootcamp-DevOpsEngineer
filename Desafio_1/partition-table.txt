@@ -1,0 +1,11 @@
+Disco /dev/sdb: 5 GiB, 5368709120 bytes, 10485760 sectores
+Disk model: VBOX HARDDISK   
+Unidades: sectores de 1 * 512 = 512 bytes
+Tamaño de sector (lógico/físico): 512 bytes / 512 bytes
+Tamaño de E/S (mínimo/óptimo): 512 bytes / 512 bytes
+Tipo de etiqueta de disco: dos
+Identificador del disco: 0x1f686817
+
+Dispositivo Inicio Comienzo    Final Sectores Tamaño Id Tipo
+/dev/sdb1              2048  5861375  5859328   2,8G 83 Linux
+/dev/sdb2           5861376 10485759  4624384   2,2G 82 Linux swap / Solaris
