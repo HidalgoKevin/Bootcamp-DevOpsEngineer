@@ -1,0 +1,39 @@
+---
+- name: Instalar MariaDB
+  apt:
+    name: 
+      - mariadb-server
+      - mariadb-client
+    state: present
+
+- name: Iniciar y habilitar MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Asegurar instalación de MariaDB
+  expect:
+    command: mysql_secure_installation
+    responses:
+      "Enter current password for root": ""
+      "Set root password?": "Y"
+      "New password:": "USER@@123"
+      "Re-enter new password:": "USER@@123"
+      "Remove anonymous users?": "Y"
+      "Disallow root login remotely?": "Y"
+      "Remove test database and access to it?": "Y"
+      "Reload privilege tables now?": "Y"
+
+- name: Crear base de datos y usuario para WordPress
+  mysql_db:
+    name: wordpress_db
+    state: present
+
+- name: Crear usuario para WordPress
+  mysql_user:
+    name: wordpress_user
+    password: USER@@123
+    priv: "wordpress_db.*:ALL"
+    #host: localhost
+    state: present

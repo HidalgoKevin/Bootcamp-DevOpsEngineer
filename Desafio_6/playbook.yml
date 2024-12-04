@@ -1,0 +1,7 @@
+---
+- name: Deploy WordPress Application
+  hosts: demo
+  become: yes
+  roles:
+    - php
+    - mysql

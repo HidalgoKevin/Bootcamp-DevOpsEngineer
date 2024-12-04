@@ -1,0 +1,15 @@
+Desafio_6/
+├── playbook.yml
+├── vockey.pem
+├── inventary.ini
+├── README.md
+├── roles/
+│   ├── php/
+│   │   ├── tasks/
+│   │   │   ├── main.yml
+│   │   ├── templates/
+│   │   │   ├── wp-config.php.j2
+│   │   │   ├── wordpress.conf.j2
+│   ├── mysql/
+│   │   ├── tasks/
+│   │   │   ├── main.yml
