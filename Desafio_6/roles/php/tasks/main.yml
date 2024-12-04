@@ -1,15 +1,14 @@
 ---
 - name: Actualizar el servidor
   dnf:
+    name: "*"
     update_cache: yes
-    upgrade: dist
+    state: latest
 
 - name: Instalar Apache y habilitar servicio
   dnf:
     name: httpd
     state: present
-  notify:
-    - Iniciar Apache
 
 - name: Instalar PHP y extensiones
   dnf:
@@ -18,13 +17,11 @@
   loop:
     - php
     - php-common
-    - php-mysql
+    - php-mysqlnd
     - php-xml
-    - php-xmlrpc
     - php-curl
     - php-gd
     - php-cli
-    - php-imap
     - php-mbstring
     - php-opcache
     - php-soap
@@ -46,8 +43,8 @@
   file:
     path: /var/www/html/wordpress
     state: directory
-    owner: www-data
-    group: www-data
+    owner: apache
+    group: apache
     mode: '0755'
     recurse: yes
 
@@ -55,20 +52,14 @@
   template:
     src: wp-config.php.j2
     dest: /var/www/html/wordpress/wp-config.php
-    owner: www-data
-    group: www-data
+    owner: apache
+    group: apache
     mode: '0644'
 
 - name: Configurar Apache para WordPress
   template:
     src: wordpress.conf.j2
-    dest: /etc/apache2/sites-available/wordpress.conf
-
-- name: Activar configuración de WordPress en Apache
-  command: a2ensite wordpress.conf
-
-- name: Desactivar sitio predeterminado de Apache
-  command: a2dissite 000-default.conf
+    dest: /etc/httpd/conf.d/wordpress.conf
 
 - name: Recargar Apache
   service:

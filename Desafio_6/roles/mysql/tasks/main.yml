@@ -1,9 +1,9 @@
 ---
 - name: Instalar MariaDB
-  apt:
-    name: 
-      - mariadb-server
-      - mariadb-client
+  dnf:
+    name:
+      - mariadb105
+      - mariadb105-server
     state: present
 
 - name: Iniciar y habilitar MariaDB
@@ -13,19 +13,32 @@
     enabled: true
 
 - name: Asegurar instalación de MariaDB
-  expect:
-    command: mysql_secure_installation
-    responses:
-      "Enter current password for root": ""
-      "Set root password?": "Y"
-      "New password:": "USER@@123"
-      "Re-enter new password:": "USER@@123"
-      "Remove anonymous users?": "Y"
-      "Disallow root login remotely?": "Y"
-      "Remove test database and access to it?": "Y"
-      "Reload privilege tables now?": "Y"
+  block:
+    - name: Instalar expect para manejar respuestas automáticas
+      dnf:
+        name: expect
+        state: present
 
-- name: Crear base de datos y usuario para WordPress
+    - name: Asegurar MariaDB con mysql_secure_installation
+      expect:
+        command: mysql_secure_installation
+        responses:
+          "Enter current password for root": ""
+          "Set root password?": "Y"
+          "New password:": "USER@@123"
+          "Re-enter new password:": "USER@@123"
+          "Remove anonymous users?": "Y"
+          "Disallow root login remotely?": "Y"
+          "Remove test database and access to it?": "Y"
+          "Reload privilege tables now?": "Y"
+
+- name: Instalar dependencias de Ansible para manejo de MySQL
+  dnf:
+    name:
+      - python3-PyMySQL
+    state: present
+
+- name: Crear base de datos para WordPress
   mysql_db:
     name: wordpress_db
     state: present
@@ -35,5 +48,5 @@
     name: wordpress_user
     password: USER@@123
     priv: "wordpress_db.*:ALL"
-    #host: localhost
+    host: localhost
     state: present
