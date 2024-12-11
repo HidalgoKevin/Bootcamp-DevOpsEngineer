@@ -1,5 +1,8 @@
+<?php
 define('DB_NAME', 'wordpress_db');
 define('DB_USER', 'wordpress_user');
 define('DB_PASSWORD', 'USER@@123');
 define('DB_HOST', 'localhost');
+
+// Claves y salts de autenticación dinámicas
 {{ lookup('url', 'https://api.wordpress.org/secret-key/1.1/salt/') }}

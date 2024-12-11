@@ -1,23 +1,28 @@
 ---
 - name: Actualizar el servidor
-  dnf:
-    name: "*"
+  apt:
     update_cache: yes
-    state: latest
+    upgrade: dist
 
-- name: Instalar Apache y habilitar servicio
-  dnf:
-    name: httpd
+- name: Instalar Apache y habilitar el servicio
+  apt:
+    name: apache2
     state: present
 
+- name: Asegurar que Apache está habilitado y corriendo
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
 - name: Instalar PHP y extensiones
-  dnf:
+  apt:
     name: "{{ item }}"
     state: present
   loop:
     - php
     - php-common
-    - php-mysqlnd
+    - php-mysql
     - php-xml
     - php-curl
     - php-gd
@@ -43,8 +48,8 @@
   file:
     path: /var/www/html/wordpress
     state: directory
-    owner: apache
-    group: apache
+    owner: www-data
+    group: www-data
     mode: '0755'
     recurse: yes
 
@@ -52,16 +57,25 @@
   template:
     src: wp-config.php.j2
     dest: /var/www/html/wordpress/wp-config.php
-    owner: apache
-    group: apache
+    owner: www-data
+    group: www-data
     mode: '0644'
 
 - name: Configurar Apache para WordPress
   template:
     src: wordpress.conf.j2
-    dest: /etc/httpd/conf.d/wordpress.conf
+    dest: /etc/apache2/sites-available/wordpress.conf
+
+- name: Habilitar sitio de WordPress en Apache
+  command: a2ensite wordpress.conf
+
+- name: Deshabilitar el sitio predeterminado de Apache
+  command: a2dissite 000-default.conf
+
+- name: Habilitar módulo de reescritura de Apache
+  command: a2enmod rewrite
 
 - name: Recargar Apache
   service:
-    name: httpd
+    name: apache2
     state: reloaded
