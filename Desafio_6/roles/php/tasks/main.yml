@@ -32,6 +32,8 @@
     - php-soap
     - php-zip
     - php-intl
+    - python3-mysqldb
+    - libmysqlclient-dev
 
 - name: Descargar WordPress
   get_url:
@@ -61,21 +63,20 @@
     group: www-data
     mode: '0644'
 
+- name: Habilitar módulo de reescritura en Apache
+  command: a2enmod rewrite
+  notify: Reiniciar Apache
+
 - name: Configurar Apache para WordPress
   template:
     src: wordpress.conf.j2
     dest: /etc/apache2/sites-available/wordpress.conf
 
-- name: Habilitar sitio de WordPress en Apache
+- name: Habilitar VirtualHost de WordPress
   command: a2ensite wordpress.conf
+  notify: Reiniciar Apache
 
-- name: Deshabilitar el sitio predeterminado de Apache
+- name: Deshabilitar sitio por defecto
   command: a2dissite 000-default.conf
+  notify: Reiniciar Apache
 
-- name: Habilitar módulo de reescritura de Apache
-  command: a2enmod rewrite
-
-- name: Recargar Apache
-  service:
-    name: apache2
-    state: reloaded

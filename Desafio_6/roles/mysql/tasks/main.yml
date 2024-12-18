@@ -11,8 +11,6 @@
   loop:
     - mysql-server
     - mysql-client
-    - python3-mysqldb
-    - libmysqlclient-dev
   become: yes
     
 - name: start and enable mysql service
@@ -31,23 +29,19 @@
     login_password: ''
     state: present
 
-- name: Create admin user with remote access
-  mysql_user:
-    name: "{{admin_user}}"
-    password: "{{admin_password}}"
-    priv: '*.*:ALL'
-    host: '%'
-    append_privs: yes
-    login_user: root
-    login_password: "{{root_password}}"
-    state: present
-
 - name: creating database 
   mysql_db:
     name: "{{db_name}}"
     state: present
     login_user: root
     login_password: "{{root_password}}"
+
+- name: Create user MySQL for WordPress
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    priv: "{{ db_name }}.*:ALL"
+    state: present
 
 - name: Execute MySQL secure installation
   expect:

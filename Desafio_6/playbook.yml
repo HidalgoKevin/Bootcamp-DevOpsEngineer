@@ -3,5 +3,5 @@
   hosts: demo
   become: yes
   roles:
-    - php
     - mysql
+    - php
