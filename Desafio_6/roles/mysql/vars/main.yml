@@ -1,0 +1,6 @@
+---
+root_password: kevin123
+admin_user: kevin
+admin_password: 123kevin
+db_name: wordpress_db
+password_validation_policy: 1     

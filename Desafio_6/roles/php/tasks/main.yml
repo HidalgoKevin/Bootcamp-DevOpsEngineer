@@ -1,22 +1,22 @@
 ---
 - name: Actualizar el servidor
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     upgrade: dist
 
 - name: Instalar Apache y habilitar el servicio
-  apt:
+  ansible.builtin.apt:
     name: apache2
     state: present
 
 - name: Asegurar que Apache está habilitado y corriendo
-  service:
+  ansible.builtin.service:
     name: apache2
     state: started
     enabled: yes
 
 - name: Instalar PHP y extensiones
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop:

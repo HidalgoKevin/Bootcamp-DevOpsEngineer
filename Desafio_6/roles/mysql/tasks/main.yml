@@ -1,52 +1,65 @@
 ---
-- name: Instalar MariaDB y dependencias
-  apt:
-    name:
-      - mariadb-server
-      - mariadb-client
-    state: present
+- name: Update apt cache
+  ansible.builtin.apt:
     update_cache: yes
 
-- name: Iniciar y habilitar MariaDB
-  service:
-    name: mariadb
-    state: started
-    enabled: true
+- name: Installing Mysql
+  ansible.builtin.package:
+      name: "{{item}}"
+      state: present
+      update_cache: yes
+  loop:
+    - mysql-server
+    - mysql-client
+    - python3-mysqldb
+    - libmysqlclient-dev
+  become: yes
+    
+- name: start and enable mysql service
+  ansible.builtin.service:
+      name: mysql
+      state: started
+      enabled: yes
 
-- name: Asegurar instalación de MariaDB
-  block:
-    - name: Instalar expect para manejar respuestas automáticas
-      apt:
-        name: expect
-        state: present
-
-    - name: Asegurar MariaDB con mysql_secure_installation
-      expect:
-        command: mysql_secure_installation
-        responses:
-          "Enter current password for root (enter for none):": ""
-          "Set root password? [Y/n]": "Y"
-          "New password:": "USER@@123"
-          "Re-enter new password:": "USER@@123"
-          "Remove anonymous users? [Y/n]": "Y"
-          "Disallow root login remotely? [Y/n]": "Y"
-          "Remove test database and access to it? [Y/n]": "Y"
-          "Reload privilege tables now? [Y/n]": "Y"
-
-- name: Instalar dependencias de Ansible para manejar MySQL
-  apt:
-    name: python3-pymysql
-    state: present
-
-- name: Crear base de datos para WordPress
-  mysql_db:
-    name: wordpress_db
-    state: present
-
-- name: Crear usuario para WordPress
+- name: Set root user password
   mysql_user:
-    name: wordpress_user
-    password: USER@@123
-    priv: "wordpress_db.*:ALL"
+    name: root
+    password: "{{root_password}}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
     host: localhost
+    login_user: root
+    login_password: ''
     state: present
+
+- name: Create admin user with remote access
+  mysql_user:
+    name: "{{admin_user}}"
+    password: "{{admin_password}}"
+    priv: '*.*:ALL'
+    host: '%'
+    append_privs: yes
+    login_user: root
+    login_password: "{{root_password}}"
+    state: present
+
+- name: creating database 
+  mysql_db:
+    name: "{{db_name}}"
+    state: present
+    login_user: root
+    login_password: "{{root_password}}"
+
+- name: Execute MySQL secure installation
+  expect:
+    command: mysql_secure_installation
+    responses:
+      'Enter password for user root:': "{{ root_password }}"
+      'Press y\|Y for Yes, any other key for No': 'Y'
+      'Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG': "{{ password_validation_policy }}"
+      'Change the password for root \? \(\(Press y\|Y for Yes, any other key for No\)': 'n'
+      'Remove anonymous users\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+      'Disallow root login remotely\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+      'Remove test database and access to it\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+      'Reload privilege tables now\? \(Press y\|Y for Yes, any other key for No\)': 'Y'
+  environment:
+    MYSQL_PWD: "{{ root_password }}"
