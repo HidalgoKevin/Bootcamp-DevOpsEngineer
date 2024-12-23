@@ -19,7 +19,12 @@
       state: started
       enabled: yes
 
-- name: Set root user password
+- name: Check if root password is already set
+  command: mysqladmin -u root -p{{ root_password }} ping
+  register: root_password_status
+  ignore_errors: yes
+
+- name: Set root user password (if already set - ignored)
   mysql_user:
     name: root
     password: "{{root_password}}"
@@ -28,6 +33,7 @@
     login_user: root
     login_password: ''
     state: present
+  when: root_password_status.failed
 
 - name: creating database 
   mysql_db:
@@ -42,6 +48,8 @@
     password: "{{ db_password }}"
     priv: "{{ db_name }}.*:ALL"
     state: present
+    login_user: root
+    login_password: "{{ root_password }}"
 
 - name: Execute MySQL secure installation
   expect:

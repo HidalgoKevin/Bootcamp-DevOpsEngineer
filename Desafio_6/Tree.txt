@@ -3,13 +3,20 @@ Desafio_6/
 ├── vockey.pem
 ├── inventary.ini
 ├── README.md
+│   
+├── group_vars/
+│   ├── all.yml
 ├── roles/
+│   ├── mysql/
+│   │   ├── handlers/
+│   │   │   ├── main.yml
+│   │   ├── tasks/
+│   │   │   ├── main.yml
 │   ├── php/
+│   │   ├── handlers/
+│   │   │   ├── main.yml
 │   │   ├── tasks/
 │   │   │   ├── main.yml
 │   │   ├── templates/
 │   │   │   ├── wp-config.php.j2
 │   │   │   ├── wordpress.conf.j2
-│   ├── mysql/
-│   │   ├── tasks/
-│   │   │   ├── main.yml
