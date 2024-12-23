@@ -64,10 +64,9 @@ Pasos a seguir:
 - En la seccion de conectividad, habilitar la conexion por SSH, Http y https.
 - Presionar Crear la Instancia.
 
-Una vez que este en estado "", ir a **Acciones** -> **Seguridad** -> **Cambiar IAM Role**, y seleccionar el Role "LabInstance"
-y confirmar el cambio.
+Una vez que el campo **Comprobaciones de Estado** este en **2/2 comprobaciones superadas**, ir a **Acciones** -> **Seguridad** -> **Cambiar Rol de IAM**, y seleccionar el Role **LabInstanceProfile** y confirmar el cambio.
 
-Una vez ya aplicado el cambio se debe seleccionar la instancia creada y copiar su IPv4 Publica la cual la agregaremos en el archivo inventory.ini en la seccion [demo].
+Una vez ya aplicado el cambio se debe seleccionar la instancia creada y copiar su IPv4 Publica la cual la agregaremos en el archivo **inventory.ini** en la seccion [demo] (en mi caso es 54.234.17.235).
 
 ---
 
@@ -76,11 +75,42 @@ Una vez realizado todos los pasos anteriores ya se puede ejecutar el comando de 
 ```bash
 ansible-playbook -i inventory.ini playbook
 ```
+El resultado en consola seria el siguiente:
+
+<p align="center">
+<a href="#" target="_blank" rel="noopener noreferrer">
+<img width="100%" heigth="100%" src="image/playbook.png" alt="playbook ejecutado">
+</a>
+</p>
 
 ### 5. Verificar el funcionamiento
 Una vez ejecutado el playbook y finalizado el mismo, para comprobar que haya realizado la instalacion correcta de wordpress y mysql, se debe acceder a la IP publica del EC2.
 Se le tendra que sacar la **S** de HTTPS ya que el contenido se visualiza por HTTP (puerto 80).
 Si no hay errores en la instalacion y configuracion del mismo, se deberia visualizar la interfaz de instalacion de wordpress.
 
- 
+<p align="center">
+<a href="#" target="_blank" rel="noopener noreferrer">
+<img width="100%" heigth="100%" src="image/Wordpress-Instalacion.PNG" alt="wordpress">
+</a>
+</p> 
+
+Si se quiere validar la creacion de la base de datos para wordpress, se puede acceder por SSH al EC2 y desde ahi acceder al mysql instalado.
+Para acceder por SSH se debe ir al boton Conectar en EC2 (manteniendo seleccionado la instancia en cuestion) y te dara un comando como este:
+```bash
+ssh -i "vockey.pem" ubuntu@ec2-54-234-17-235.compute-1.amazonaws.com
+```
+Lo podras ejecutar en la PC que estas usando para ejecutar al playbook de ansible y una vez ingresado, si usas el siguiente comando podras acceder a mysql ingresando la credencial que se encuentra en el archivo all.yml en group_vars. 
+```bash
+sudo mysql -u root -p
+```
+Y una vez ingresado, se se ejecuta el siguiente comando se podra visualizar las bases de datos existentes en donde deberia aparecer la definida en el mismo all.yml.
+```bash
+SHOW DATABASES;
+```
+
+<p align="center">
+<a href="#" target="_blank" rel="noopener noreferrer">
+<img width="70%" heigth="70%" src="image/MySQL.PNG" alt="mysql">
+</a>
+</p>
 

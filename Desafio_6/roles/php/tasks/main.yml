@@ -1,9 +1,4 @@
 ---
-- name: Actualizar el servidor
-  ansible.builtin.apt:
-    update_cache: yes
-    upgrade: dist
-
 - name: Instalar Apache y habilitar el servicio
   ansible.builtin.apt:
     name: apache2
@@ -32,8 +27,6 @@
     - php-soap
     - php-zip
     - php-intl
-    - python3-mysqldb
-    - libmysqlclient-dev
 
 - name: Descargar WordPress
   get_url:

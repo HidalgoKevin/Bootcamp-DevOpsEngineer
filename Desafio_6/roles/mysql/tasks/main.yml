@@ -2,6 +2,7 @@
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: yes
+    upgrade: dist
 
 - name: Installing Mysql
   ansible.builtin.package:
@@ -11,6 +12,7 @@
   loop:
     - mysql-server
     - mysql-client
+    - python3-mysqldb
   become: yes
     
 - name: start and enable mysql service
