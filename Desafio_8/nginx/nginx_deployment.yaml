@@ -1,18 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-deployment
+  name: nginx-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongodb
+      app: nginx
   template:
     metadata:
       labels:
-        app: mongodb
+        app: nginx
     spec:
       containers:
-      - name: mongodb
-        image: mongo:8.0.3
-
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
