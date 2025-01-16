@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nestjs-deployment
+  name: nestjs-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nestjs
+      app: nestjs-backend
   template:
     metadata:
       labels:
-        app: nestjs
+        app: nestjs-backend
     spec:
       containers:
-      - name: nestjs
-        image: khidalg1/nestjs-kh:1.0
+      - name: nestjs-backend
+        image: khidalg1/nestjs-kh:v1
         ports:
         - containerPort: 3000
         env:

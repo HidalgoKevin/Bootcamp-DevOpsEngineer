@@ -31,6 +31,8 @@ kubectl port-forward pod/nombre_pod 80
 # ANALIZAR COMO REEMPLAZO DEL MINIKUBE
 https://github.com/yosoyfunes/ansible-k8s
 
+# LA IMAGEN FUNCIONA PERO NO PUEDO EJECUTAR LOS TESTS
+
 
 ## Descripción
 
