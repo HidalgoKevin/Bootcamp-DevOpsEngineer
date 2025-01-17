@@ -22,60 +22,131 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-
-
-
-# REALIZAR EL PORT-FORDWARD PARA EXPONER EL NGINX
-kubectl port-forward pod/nombre_pod 80
-
-# ANALIZAR COMO REEMPLAZO DEL MINIKUBE
-https://github.com/yosoyfunes/ansible-k8s
-
-# LA IMAGEN FUNCIONA PERO NO PUEDO EJECUTAR LOS TESTS
-
+---
 
 ## Descripción
 
-En este desafío, vamos a crear un archivo Dockerfile para construir la aplicación NestJS y un archivo docker-compose.yml para levantar un entorno completo con Nginx (frontend), NestJS (backend), y MongoDB (base de datos). Este entorno permitirá a los desarrolladores trabajar localmente con facilidad.
+En este desafío, vamos a crear un archivo Dockerfile para construir la aplicación NestJS y varios manifiestos de Kubernetes (Deployment, Service, ConfigMap, y PersistentVolumeClaim) para desplegar un entorno completo con Nginx (frontend), NestJS (backend) y MongoDB (base de datos). Este entorno estará diseñado para funcionar en un clúster de Kubernetes, permitiendo a los desarrolladores gestionar y escalar los servicios de forma eficiente.
 
-## Ejecutar el proyecto
+## Descargar el proyecto
 
 Se debe clonar el repositorio y acceder a la carpeta del proyecto
 ```bash
-git clone https://github.com/HidalgoKevin/app-template-nestjs.git
+git clone https://github.com/HidalgoKevin/Bootcamp-DevOpsEngineer
 
-cd app-template-nestjs
+cd Bootcamp-DevOpsEngineer/Desafio_8
 ```
 
-**Importante**: En el archivo **docker-compose.yml** esta seteado **version: '3.8'** que hace referencia a la version de docker, verificar que tu pc tenga una version de docker igual o superior o de lo contrario reportara un error que impedira avanzar.
+Una vez dentro de la carpeta del proyecto (desafio), se debe acceder a la carpeta kubernetes en la cual existiran 3 carpetas las cuales tendran los manifiestos de kubernetes de cada aplicacion mencionada anteriormente.
 
-Una vez dentro de la carpeta se debe ejecutar el siguiente comando que realizara la creacion de los contenedores.
+## Ejecutar el proyecto
+
+Para ejecutar los manifiestos y dejar habilitado la infraestructura se deben realizar utilizando el siguiente comando y los manifiestos tienen un orden en el cual se ejecutan para evitar errores.
 
 ```bash
-docker-compose up -d
+kubectl apply -f "archivo"
+```
+
+Orden de los manifiestos:
+- **Configmap**: Almacena configuraciones no sensibles en pares clave-valor.
+- **Volume**: es una solicitud de almacenamiento persistente realizada por un Pod. (PersistentVolume o PersistentVolumeClaim)
+- **Deployment**: Una implementación administra un conjunto de pods para ejecutar una carga de trabajo de la aplicación, normalmente una que no mantiene el estado.
+- **Service**: Expone una aplicación que se ejecuta en el clúster detrás de un único punto de conexión orientado hacia el exterior.
+
+---
+
+### 1 - Base de Datos:
+
+Comenzaremos con la base de datos, se debe acceder a la carpeta mongo que se encuentra el directorio kubernetes:
+
+```bash
+cd kubertenes/mongodb
+```
+Despues se deben ejecutar los manifiestos en el orden anterior mencionado:
+
+```bash
+kubectl apply -f mongo_config.yaml
+kubectl apply -f mongo_deployment.yaml
+kubectl apply -f mongo_service.yaml
 ```
 
 <p align="center">
 <a href="#" target="_blank" rel="noopener noreferrer">
-<img width="70%" heigth="70%" src="image/Resultado.png" alt="Ruta Pipeline">
+<img width="70%" heigth="70%" src="image/Mongo Volume.PNG" alt="Ruta Pipeline">
+<img width="70%" heigth="70%" src="image/Mongo_Deployment.PNG" alt="Ruta Pipeline">
+<img width="70%" heigth="70%" src="image/Mongo Service.PNG" alt="Ruta Pipeline">
 </a>
 </p>
 
-Una vez creado, se puede validar si estan activos usando el comando:
+---
+
+### 2 - NestJS
+
+Se debe acceder a la carpeta nestjs que existe dentro del directorio kubernetes, como ya se encuentra en una carpeta dentro de dicho directorio solo debera retroceder un directorio con el comando **cd ..**
 
 ```bash
-docker ps
+cd nestjs
+```
+
+Despues se deben ejecutar los manifiestos:
+
+```bash
+kubectl apply -f nestjs_deployment.yaml
+kubectl apply -f nestjs_service.yaml
 ```
 
 <p align="center">
 <a href="#" target="_blank" rel="noopener noreferrer">
-<img width="100%" heigth="100%" src="image/Contenedores.PNG" alt="Ruta Pipeline">
+<img width="70%" heigth="70%" src="image/Nest Deployment-Service.PNG" alt="Ruta Pipeline">
 </a>
 </p>
+
+La imagen utilizada en el nestjs_deployment.yaml fue creada especificamente para ese manifiesto ya que kubernetes siempre busca imagenes publicadas, y para utilizar imagenes locales se debe configurar el entorno lo cual son varios pasos adicionales.
+
+```bash
+https://hub.docker.com/repository/docker/khidalg1/nestjs-kh/tags
+```
+
+---
+
+### 3 - Nginx
+
+Se debe acceder a la carpeta nginx dentro del directorio kubernetes.
+
+Despues se deben ejecutar los manifiestos:
+
+```bash
+kubectl apply -f nginx_config.yaml
+kubectl apply -f nginx_deployment.yaml
+kubectl apply -f nginx_service.yaml
+```
+
+<p align="center">
+<a href="#" target="_blank" rel="noopener noreferrer">
+<img width="70%" heigth="70%" src="image/Nginx Config.PNG" alt="Ruta Pipeline">
+<img width="70%" heigth="70%" src="image/Nginx Deployment.PNG" alt="Ruta Pipeline">
+<img width="70%" heigth="70%" src="image/Nginx Service.PNG" alt="Ruta Pipeline">
+</a>
+</p>
+
+Adicional: En el caso de querer acceder por web al pod creado, ya que al no tener un dominio disponible no usamos un Ingress, podemos habilitar el puerto para poder acceder via localhost.
+
+```bash
+kubectl port-forward pod/nombre_pod 80
+```
+Reemplazar **nombre_pod** por el por del nginx y una vez realizado el comando si van al navegador y colocan **http://localhost:80** deberian poder visualizar la pagina de nginx.
+
+---
 
 ## Ejecutar Tests
 
-Para comprobar el funcionamiento se pueden realizar los siguientes tests.
+Para comprobar el funcionamiento se pueden realizar los siguientes tests una vez que se accede al pod nestjs-backend.
+
+```bash
+kubectl exec -it "Name-Pod" -- /bin/bash
+```
+Reemplazar el **"Name-Pod"** por el correspondiente, para obtenerlo realizar un **kubectl get pods**.
+Una vez accedido deberia aparecer en el directorio **/usr/src/app** y una vez ahi ejecutara los siguientes comandos correspondientes a las 3 pruebas.
 
 ```bash
 # unit tests
@@ -99,7 +170,7 @@ Resultado esperado:
 
 <p align="center">
 <a href="#" target="_blank" rel="noopener noreferrer">
-<img width="50%" heigth="50%" src="image/Test e2e.PNG" alt="Ruta Pipeline">
+<img width="50%" heigth="50%" src="image/Test E2E.PNG" alt="Ruta Pipeline">
 </a>
 </p>
 
@@ -112,6 +183,6 @@ Resultado esperado:
 
 <p align="center">
 <a href="#" target="_blank" rel="noopener noreferrer">
-<img width="50%" heigth="50%" src="image/Test cov.PNG" alt="Ruta Pipeline">
+<img width="50%" heigth="50%" src="image/test COV.PNG" alt="Ruta Pipeline">
 </a>
 </p>
