@@ -55,6 +55,21 @@ Orden de los manifiestos:
 
 ---
 
+### 0 - Crear Namespace y acceder a el
+
+Con el fin de que los Pods no queden en cualquier lado por defecto, lo mas optimo seria crear un namespace para poder identificar la ubicacion de los pods ejecutados.
+
+```bash
+kubectl create namespace desafio8
+```
+Una vez creado, utilizaremos el comando kubens el cual nos permitira acceder en el.
+Es muy posible que no este inteladado en la pc anfitrion, se instala y accede al namespace con los siguientes comandos:
+
+```bash
+snap install kubectx --classic
+kubens desafio8
+```
+
 ### 1 - Base de Datos:
 
 Comenzaremos con la base de datos, se debe acceder a la carpeta mongo que se encuentra el directorio kubernetes:
