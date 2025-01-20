@@ -1,0 +1,9 @@
+frontend:
+  replicaCount: 1
+  name: nginx
+  image: nginx:alpine
+  port: 80
+  targetport: 80
+  protocol: TCP
+  type: ClusterIP
+  mountPath: /etc/nginx/conf.d

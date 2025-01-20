@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nginx-frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.frontend.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.frontend.name }}
+    spec:
+      containers:
+      - name: {{ .Values.frontend.name }}
+        image: {{ .Values.frontend.image }}
+        ports:
+        - containerPort: {{ .Values.frontend.port }}
+        volumeMounts:
+        - name: {{ .Release.Name }}-nginx-config
+          mountPath: {{ .Values.frontend.mountPath }}
+      volumes:
+      - name: {{ .Release.Name }}-nginx-config
+        configMap:
+          name: {{ .Release.Name }}-nginx-config

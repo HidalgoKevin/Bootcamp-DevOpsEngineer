@@ -1,0 +1,7 @@
+backend:
+  replicaCount: 1
+  name: nestjs
+  image: khidalg1/nestjs-kh:v1
+  port: 3000
+  targetport: 3000
+  type: ClusterIP

@@ -1,0 +1,12 @@
+database:
+  replicaCount: 1
+  name: mongodb
+  image: mongo:8.0.3
+  name_volume: mongodb-data
+  mountPath: /data/db
+  port: 27017
+  targetport: 27017
+  protocol: TCP
+  type: ClusterIP
+  storage: 1Gi
+  accessModes: ReadWriteOnce

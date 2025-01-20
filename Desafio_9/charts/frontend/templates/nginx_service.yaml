@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-nginx-frontend
+spec:
+  selector:
+    app: {{ .Values.frontend.name }}
+  ports:
+  - protocol: {{ .Values.frontend.protocol }}
+    port: {{ .Values.frontend.port }}
+    targetPort: {{ .Values.frontend.targetport }}
+  type: {{ .Values.frontend.type }}
