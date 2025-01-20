@@ -18,9 +18,9 @@ spec:
         ports:
         - containerPort: {{ .Values.frontend.port }}
         volumeMounts:
-        - name: {{ .Release.Name }}-nginx-config
+        - name: {{ .Release.Name }}-{{ .Values.frontend.name_config }}
           mountPath: {{ .Values.frontend.mountPath }}
       volumes:
-      - name: {{ .Release.Name }}-nginx-config
+      - name: {{ .Release.Name }}-{{ .Values.frontend.name_config }}
         configMap:
-          name: {{ .Release.Name }}-nginx-config
+          name: {{ .Release.Name }}-{{ .Values.frontend.name_config }}

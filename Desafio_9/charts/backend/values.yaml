@@ -5,3 +5,4 @@ backend:
   port: 3000
   targetport: 3000
   type: ClusterIP
+  protocol: TCP

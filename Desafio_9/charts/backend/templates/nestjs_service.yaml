@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-nestjs-backend
 spec:
-  type: ClusterIP
+  type: {{ .Values.backend.type }}
   selector:
-    app: nestjs
+    app: {{ .Values.backend.name }}
   ports:
-  - protocol: TCP
+  - protocol: {{ .Values.backend.protocol }}
     port: {{ .Values.backend.port }}
     targetPort: {{ .Values.backend.targetport }}

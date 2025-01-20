@@ -16,9 +16,9 @@ spec:
       - name: {{ .Values.database.name }}
         image: {{ .Values.database.image }}
         volumeMounts:
-        - name: {{ .Values.database.name_volume }}
+        - name: {{ .Release.Name }}-{{ .Values.database.name_volume }}
           mountPath: {{ .Values.database.mountPath }}
       volumes:
-      - name: {{ .Values.database.name_volume }}
+      - name: {{ .Release.Name }}-{{ .Values.database.name_volume }}
         persistentVolumeClaim:
-          claimName: {{ .Values.database.name_volume }}
+          claimName: {{ .Release.Name }}-{{ .Values.database.name_volume }}

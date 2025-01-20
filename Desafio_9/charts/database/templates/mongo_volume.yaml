@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Values.database.name_volume }}
+  name: {{ .Release.Name }}-{{ .Values.database.name_volume }}
 spec:
   accessModes:
     - {{ .Values.database.accessModes }}

@@ -5,7 +5,7 @@ metadata:
 data:
   default.conf: |
     upstream Backend {
-        server nestjs-backend:3000;
+        server {{ .Release.Name }}-nestjs-backend:3000;
     }
 
     server {

@@ -2,6 +2,7 @@ frontend:
   replicaCount: 1
   name: nginx
   image: nginx:alpine
+  name_config: nginx-config
   port: 80
   targetport: 80
   protocol: TCP
