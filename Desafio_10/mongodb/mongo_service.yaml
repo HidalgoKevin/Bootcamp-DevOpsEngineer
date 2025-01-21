@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-database
+spec:
+  type: ClusterIP
+  selector:
+    app: mongodb-database
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017

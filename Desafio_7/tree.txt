@@ -1,0 +1,6 @@
+Desafio_7/
+├── main.tf          # Archivo principal con la definición de recursos
+├── variables.tf     # Definición de variables
+├── outputs.tf       # Definición de salidas
+├── terraform.tfvars # Asignación de valores a las variables
+├── index.html       # Archivo estático para el sitio web

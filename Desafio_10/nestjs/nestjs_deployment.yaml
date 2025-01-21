@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestjs-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nestjs-backend
+  template:
+    metadata:
+      labels:
+        app: nestjs-backend
+    spec:
+      containers:
+      - name: nestjs-backend
+        image: khidalg1/nestjs-kh:v1
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MONGODB_URI
+          value: "mongodb://mongodb-service:27017/nestjs"

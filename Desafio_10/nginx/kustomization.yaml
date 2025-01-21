@@ -1,0 +1,4 @@
+resources:
+  - nginx_config.yaml
+  - nginx_deployment.yaml
+  - nginx_service.yaml
