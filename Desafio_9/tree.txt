@@ -1,0 +1,24 @@
+Desafio_9/
+├── Chart.yaml
+├── values.yaml
+├── charts/
+│   ├── database/
+│   │   ├── Chart.yaml
+│   │   ├── values.yaml
+│   │   └── templates/
+│   │       ├── mongo_deployment.yaml
+│   │       ├── mongo_service.yaml
+│   │       └── mongo_volume.yaml
+│   ├── backend/
+│   │   ├── Chart.yaml
+│   │   ├── values.yaml
+│   │   └── templates/
+│   │       ├── nestjs_deployment.yaml
+│   │       └── nestjs_service.yaml
+│   └── frontend/
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
+│           ├── nginx_config.yaml
+│           ├── nginx_deployment.yaml
+│           └── nginx_service.yaml

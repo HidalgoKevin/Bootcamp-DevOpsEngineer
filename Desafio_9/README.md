@@ -26,7 +26,7 @@
 
 ## Descripción
 
-En este desafío, vamos a crear un archivo Dockerfile para construir la aplicación NestJS y varios manifiestos de Kubernetes (Deployment, Service, ConfigMap, y PersistentVolumeClaim) para desplegar un entorno completo con Nginx (frontend), NestJS (backend) y MongoDB (base de datos). Este entorno estará diseñado para funcionar en un clúster de Kubernetes, permitiendo a los desarrolladores gestionar y escalar los servicios de forma eficiente.
+En este desafío, vamos a utilizar Helm Charts para construir y gestionar la arquitectura de la aplicación. Crearemos un Helm Chart que incluirá plantillas para los diferentes componentes de la aplicación NestJS, como el frontend con Nginx, el backend con NestJS, y la base de datos con MongoDB. El Helm Chart generará los manifiestos necesarios (Deployment, Service, ConfigMap y PersistentVolumeClaim) para desplegar un entorno completo en un clúster de Kubernetes. Esta solución permitirá a los desarrolladores gestionar, personalizar y escalar los servicios de manera eficiente y centralizada.
 
 ## Descargar el proyecto
 
