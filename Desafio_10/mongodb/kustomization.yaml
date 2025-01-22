@@ -1,4 +1,0 @@
-resources:
-  - mongodb_volume.yaml
-  - mongodb_deployment.yaml
-  - mongodb_service.yaml

@@ -1,3 +1,0 @@
-resources:
-  - nestjs_deployment.yaml
-  - nestjs_service.yaml
