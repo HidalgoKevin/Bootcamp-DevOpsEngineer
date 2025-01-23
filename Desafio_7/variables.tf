@@ -9,3 +9,7 @@ variable "bucket_name" {
 variable "cloudfront_comment" {
   default = "Distribución de CloudFront para el sitio estático"
 }
+
+variable "web" {
+  default = "index.html"
+}

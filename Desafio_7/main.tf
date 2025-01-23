@@ -1,16 +1,11 @@
-provider "aws" {
-  region = var.region
-}
+# ----------------------------------------------------------------------
+#                             BUCKET S3
+# ----------------------------------------------------------------------
 
-# Bucket S3
+# Creacion del bucket cerrado
 resource "aws_s3_bucket" "static_bucket" {
   bucket = var.bucket_name
   acl    = "private"
-
-  tags = {
-    Name        = "Sitio Web Estático"
-    Environment = "Dev"
-  }
 }
 
 # Configurar el bucket como un sitio web estático
@@ -18,8 +13,15 @@ resource "aws_s3_bucket_website_configuration" "static_site" {
   bucket = aws_s3_bucket.static_bucket.id
 
   index_document {
-    suffix = "index.html"
+    suffix = var.web
   }
+}
+
+resource "aws_s3_bucket_object" "index" {
+  bucket = aws_s3_bucket.static_website.bucket
+  key    = var.web
+  source = var.web
+  acl    = "public-read"
 }
 
 # Política del bucket para permitir acceso desde CloudFront
@@ -45,6 +47,10 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
   })
 }
 
+# ----------------------------------------------------------------------
+#                            CLOUDFRONT
+# ----------------------------------------------------------------------
+
 # Origin Access Control para CloudFront
 resource "aws_cloudfront_origin_access_control" "oac" {
   name       = "S3OriginAccessControl"
@@ -56,7 +62,7 @@ resource "aws_cloudfront_origin_access_control" "oac" {
 # Distribución de CloudFront
 resource "aws_cloudfront_distribution" "cf" {
   enabled             = true
-  default_root_object = "index.html"
+  default_root_object = var.web
 
   origin {
     domain_name              = aws_s3_bucket.static_bucket.bucket_regional_domain_name
