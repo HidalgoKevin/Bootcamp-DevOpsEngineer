@@ -3,13 +3,10 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  default = "kh-bucket"
+  default = "kh1-bucket"
 }
 
 variable "cloudfront_comment" {
   default = "Distribución de CloudFront para el sitio estático"
 }
 
-variable "web" {
-  default = "index.html"
-}

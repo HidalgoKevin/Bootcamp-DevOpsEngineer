@@ -5,15 +5,12 @@ terraform {
       version = "~> 5.0"
     }
   }  
-  backend "s3" {
-    bucket = var.bucket_name
-    region = var.region
-  }
 }
 
 # Configure the AWS Provider
 provider "aws" {
-  region = var.region
+  region = "us-east-1"
+  #profile = "577638372784_AdministratorAccess"
 
   default_tags {
     tags = {

@@ -1,45 +1,48 @@
-# ----------------------------------------------------------------------
-#                             BUCKET S3
-# ----------------------------------------------------------------------
-
-# Creacion del bucket cerrado
-resource "aws_s3_bucket" "static_bucket" {
+# Crea el bucket S3 para un sitio web estático
+resource "aws_s3_bucket" "static_website" {
   bucket = var.bucket_name
-  acl    = "private"
-}
 
-# Configurar el bucket como un sitio web estático
-resource "aws_s3_bucket_website_configuration" "static_site" {
-  bucket = aws_s3_bucket.static_bucket.id
-
-  index_document {
-    suffix = var.web
+  tags = {
+    Name        = "SitioWebEstatico"
+    Environment = "Producción"
   }
 }
 
-resource "aws_s3_bucket_object" "index" {
-  bucket = aws_s3_bucket.static_website.bucket
-  key    = var.web
-  source = var.web
-  acl    = "public-read"
+# Sube el archivo index.html al bucket
+resource "aws_s3_object" "index" {
+  bucket       = aws_s3_bucket.static_website.bucket
+  key          = "index.html"
+  source       = "index.html"
+  content_type = "text/html"
 }
 
-# Política del bucket para permitir acceso desde CloudFront
-resource "aws_s3_bucket_policy" "bucket_policy" {
-  bucket = aws_s3_bucket.static_bucket.id
+# Bloquear accesos públicos al bucket
+resource "aws_s3_bucket_public_access_block" "static_website_block" {
+  bucket                  = aws_s3_bucket.static_website.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Política del bucket para permitir acceso al OAC
+resource "aws_s3_bucket_policy" "static_website_policy" {
+  bucket = aws_s3_bucket.static_website.id
+
   policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow",
+        Sid       = "AllowCloudFrontAccess"
+        Effect    = "Allow"
         Principal = {
           Service = "cloudfront.amazonaws.com"
-        },
-        Action = "s3:GetObject",
-        Resource = "${aws_s3_bucket.static_bucket.arn}/*",
+        }
+        Action    = "s3:GetObject"
+        Resource  = "${aws_s3_bucket.static_website.arn}/*"
         Condition = {
           StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.cf.arn
+            "AWS:SourceArn" = aws_cloudfront_distribution.cdn.arn
           }
         }
       }
@@ -47,34 +50,33 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
   })
 }
 
-# ----------------------------------------------------------------------
-#                            CLOUDFRONT
-# ----------------------------------------------------------------------
-
-# Origin Access Control para CloudFront
+# Configura un Origin Access Control (OAC) para CloudFront
 resource "aws_cloudfront_origin_access_control" "oac" {
-  name       = "S3OriginAccessControl"
+  name                              = "OAC-SitioEstático"
+  description                       = "OAC para acceso a S3 desde CloudFront"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
-# Distribución de CloudFront
-resource "aws_cloudfront_distribution" "cf" {
-  enabled             = true
-  default_root_object = var.web
+# Configura la distribución de CloudFront
+resource "aws_cloudfront_distribution" "cdn" {
+  enabled = true
 
   origin {
-    domain_name              = aws_s3_bucket.static_bucket.bucket_regional_domain_name
-    origin_id                = "S3Origin"
+    domain_name = aws_s3_bucket.static_website.bucket_regional_domain_name
+    origin_id   = aws_s3_bucket.static_website.id
+
+    # Uso exclusivo de OAC
     origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
   default_cache_behavior {
-    target_origin_id       = "S3Origin"
+    target_origin_id       = aws_s3_bucket.static_website.id
     viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
+
+    allowed_methods = ["GET", "HEAD"]
+    cached_methods  = ["GET", "HEAD"]
 
     forwarded_values {
       query_string = false
@@ -84,9 +86,18 @@ resource "aws_cloudfront_distribution" "cf" {
     }
   }
 
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
   viewer_certificate {
     cloudfront_default_certificate = true
   }
 
-  comment = var.cloudfront_comment
+  tags = {
+    Name        = "DistribuciónCloudFront"
+    Environment = "Producción"
+  }
 }
