@@ -1,36 +1,47 @@
 # Bootcamp-DevOpsEngineer
 
-Estoy realizando el bootcamp de DevOps Engineer el cual finalizaria en Enero 2025.
-En este repositorio se subira los desafios y actividades realizadas en las clases del bootcamp.
-Se hara enfasis en practicas de distintas areas de un DevOps para obtener las skills necesarias para desembolverse en dicha rol.
+El Bootcamp de DevOps Engineer de Educación IT es un programa intensivo diseñado para proporcionar a los participantes una formación completa en las metodologías, herramientas y prácticas esenciales para desempeñar un rol en DevOps. El curso está estructurado en tres niveles: inicial, intermedio y avanzado, y cubre temas como la gestión de infraestructura, automatización, seguridad, y prácticas ágiles para mejorar la entrega de software.
 
----
+## Fases
 
-## 1) SysAdmin
-
-## 2) Cloud Engineer
-
-## 3) DevOps Engineer
-
-## ¿Qué voy a crear?
-Implementarás un e-commerce dentro de un entorno en la nube, recorriendo todas las tareas de un DevOps, inmerso en metodologías ágiles.
-
-* Implementarás infraestructura física y virtualizada.
-* Publicarás en la nube de forma manual.
-* Automatización de aplicaciones y componentes.
-* Creación de Snapshots.
-* Infraestructura como código en contenedores.
-* Orquestación con Kubernetes.
-* Publicación con alta disponibilidad.
-* Implementación de seguridad.
+**FASE 1 - SysAdmin**: Administración de sistemas, responsable de servidores, redes y seguridad de datos. 
+(Introducción a Redes · Linux · Virtualización · Scripting en Linux)
 
 <div class="iconos">
-    <img src="https://img.icons8.com/color/48/amazon-web-services.png" width="50" height="auto">
-    <img src="https://img.icons8.com/fluency/48/docker.png" width="50" height="auto">
+    <img src="https://img.icons8.com/color/96/linux--v1.png" width="50" height="auto"/>
+    <img src="https://img.icons8.com/fluency/96/bash.png" width="50" height="auto"/>
+    <img src="https://img.icons8.com/ios-filled/50/sandbox.png" width="50" height="auto"/>
+    <img src="https://img.icons8.com/ios/50/network.png" width="50" height="auto"/>
+</div>
+
+**FASE 2 - Cloud Engineer**: Creación y Gestión de servicios de SaaS y PaaS.
+(Python · Git & Github · Amazon Work Space (AWS) · Jenkins).
+
+<div class="iconos">
+    <img src="https://img.icons8.com/color/96/python--v1.png" width="50" height="auto"/>
     <img src="https://img.icons8.com/color/48/jenkins.png" width="50" height="auto">
     <img src="https://img.icons8.com/color/48/git.png" width="50" height="auto">
     <img src="https://img.icons8.com/glyph-neue/64/github.png" width="50" height="auto"/>
-    <img src="https://img.icons8.com/color/48/kubernetes.png" width="50" height="auto"/>
-    <img src="https://img.icons8.com/color/48/azure-1.png" width="50" height="auto"/>
+    <img src="https://img.icons8.com/color/48/amazon-web-services.png" width="50" height="auto">
+</div>
+
+**FASE 3 - DevOps Engineer**: Mindset y Automatizaciones
+Descubre la filosofía de trabajo del DevOps, automatizando en la nube y la infraestructura como código.
+(Docker · Docker-Compose · Ansible · Terraform · Terragrunt · Kubernetes · Kustomize · Charts de Helm · Grafana · Prometheus · ArgoCD · GitHub Actions · AWS CloudFormation · GitOps · Integración continua y entrega continua (CI/CD)).
+
+<div class="iconos">
+    <img src="https://img.icons8.com/fluency/48/docker.png" width="50" height="auto">
+    <img src="https://superset.apache.org/img/docker-compose.webp" width="50" height="auto">
+    <img src="https://img.icons8.com/color/48/ansible.png" width="50" height="auto"/>
     <img src="https://img.icons8.com/color/48/terraform.png" width="50" height="auto"/>
+    <img src="https://canada1.discourse-cdn.com/flex031/uploads/gruntwork/original/1X/451c24614aece67849fd62d0432d77ecd00735c6.png" width="50" height="auto"/>
+    <img src="https://img.icons8.com/color/48/kubernetes.png" width="50" height="auto"/>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSec1Osu2mtQdJ1Ip7vgIeQffrq9rX5oEuitQ&s" width="50" height="auto"/>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCoTa5-PIY5zsjcrafZuQA_BmVebR9IDhwWg&s" width="50" height="auto"/>
+    <img width="50" height="50" src="https://img.icons8.com/color/48/prometheus-app.png" alt="prometheus-app"/>
+    <img width="50" height="50" src="https://img.icons8.com/fluency/96/grafana.png" alt="grafana"/>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAeUOKnPBZx5HFooCNRwRLeM_zgzLH_Sy7cQ&s" width="50" height="auto"/>
+    <img src="https://images.seeklogo.com/logo-png/42/2/github-actions-logo-png_seeklogo-428028.png" width="50" height="auto"/>
+    <img src="https://static-00.iconduck.com/assets.00/aws-cloudformation-icon-420x512-ihv314dk.png" width="40" height="auto"/>
+    <img src="https://user-images.githubusercontent.com/92439/89048699-78750200-d350-11ea-91f1-7204cfcd68b4.png" width="50" height="auto"/>
 </div>
